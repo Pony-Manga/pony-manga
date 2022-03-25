@@ -42,6 +42,10 @@ public class User implements UserDetails {
     List<Title> uploadedTitles;
     @ManyToMany()
     List<TitleChapter> unreadChapters;
+    @OneToMany(mappedBy = "author")
+    List<ForumThread> forumThreads;
+    @OneToMany(mappedBy = "author")
+    List<ForumThreadMessage> forumThreadMessages;
 
     public User(){}
 
