@@ -14,7 +14,7 @@ public class TitleTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = Long.valueOf(0);
-    private String tagName;
+    private String name;
     @ManyToMany()
     List<Title> titles;
 }

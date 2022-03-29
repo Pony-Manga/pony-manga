@@ -18,9 +18,11 @@ public class TitleChapter {
     private String chapterName;
     @ManyToOne
     private User uploader;
+    @ManyToOne
+    private Title title;
     private Date dateUploaded;
     private int tomeNumber;
-    private int chapterNumber;
+    private long chapterNumber;
     @ManyToMany(mappedBy = "unreadChapters")
     List<User> unreadByUsers;
     @OneToMany(mappedBy = "chapter")

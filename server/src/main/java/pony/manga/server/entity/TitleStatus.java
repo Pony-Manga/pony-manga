@@ -14,7 +14,7 @@ public class TitleStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = Long.valueOf(0);
-    private String titleName;
+    private String name;
     @OneToMany(mappedBy = "titleStatus")
     List<Title> titles;
 }

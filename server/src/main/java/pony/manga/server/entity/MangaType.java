@@ -14,7 +14,7 @@ public class MangaType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = Long.valueOf(0);
-    private String mangaTypeName;
+    private String name;
     @OneToMany(mappedBy = "mangaType")
     List<Title> titles;
 }

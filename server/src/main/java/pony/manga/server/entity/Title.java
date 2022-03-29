@@ -2,8 +2,11 @@ package pony.manga.server.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +19,11 @@ public class Title {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = Long.valueOf(0);
     private String name;
-    private String logoPath;
+    @Lob
+    @Column(columnDefinition="BLOB")
+    @Type(type="org.hibernate.type.BinaryType")
+    private byte[] logo;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
     @Column(columnDefinition="TEXT")
     private String description;
@@ -35,6 +42,8 @@ public class Title {
     List<TitleReview> reviews;
     @OneToMany(mappedBy = "ratingTo")
     List<TitleRating> ratings;
+    @OneToMany(mappedBy = "title")
+    List<TitleChapter> chapters;
     @ManyToMany(mappedBy = "titles")
     List<TitleTag> tags;
     @ManyToMany(mappedBy="favourite")

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.File;
 import java.util.List;
 
 @Getter
@@ -14,7 +15,7 @@ public class ChapterPage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = Long.valueOf(0);
-    private String pagePath;
+    private File pagePic;
     private int pageNumber;
     @OneToMany(mappedBy = "page")
     List<PageCommentary> commentaries;
