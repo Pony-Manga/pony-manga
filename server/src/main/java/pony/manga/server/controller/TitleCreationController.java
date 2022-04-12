@@ -9,10 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pony.manga.server.dto.TitleDTO;
 import pony.manga.server.entity.*;
@@ -104,7 +101,7 @@ public class TitleCreationController {
     }
 
     @PostMapping("/api/add/title")
-    public String addTitle(TitleDTO title, Model model){
+    public String addTitle(TitleDTO title, Model model, @RequestParam("logo") MultipartFile logo){
         List<String> errorList = new ArrayList<>();
         if (title.getName().equals("") || title.getName() == null){
             errorList.add("ERROR_NAME_EMPTY");
@@ -118,7 +115,7 @@ public class TitleCreationController {
         if (title.getAuthor() == null){
             errorList.add("ERROR_AUTHOR_EMPTY");
         }
-        if (title.getLogo() == null){
+        if (logo == null){
             errorList.add("ERROR_LOGO_EMPTY");
         }
         if (title.getMangaType() == null){
@@ -131,12 +128,10 @@ public class TitleCreationController {
             errorList.add("ERROR_TAGS_EMPTY");
         }
         if (errorList.size() == 0){
-            //Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             model.addAttribute("response", "SUCCESS");
             Title result = new Title();
-            //result.setUploader(userService.loadUserByUsername(authentication.getName()));
             try {
-                result.setLogo(title.getLogo().getBytes());
+                result.setLogo(logo.getBytes());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -153,12 +148,5 @@ public class TitleCreationController {
         return "jsonTemplate";
     }
 
-    @GetMapping("/api/get/pic")
-    public ResponseEntity<byte[]> getFile() {
-        Title title = titleService.getTitle(2L);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION)
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(title.getLogo());
-    }
+
 }

@@ -15,7 +15,6 @@ import java.util.List;
 @Setter
 public class TitleDTO {
     private String name;
-    private MultipartFile logo;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
     private String description;
