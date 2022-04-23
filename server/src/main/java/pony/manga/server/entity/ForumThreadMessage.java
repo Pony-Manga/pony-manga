@@ -6,6 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Данный класс отвечает за хранение информации о сообщение в треде форума.
+ * В базе данных сущности данного класса хранятся в таблице forum_thread_message.
+ */
 @Setter
 @Getter
 @Entity

@@ -10,6 +10,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Данный класс отвечает за хранение информации о пользователе ресурса.
+ * В базе данных сущности данного класса хранятся в таблице users.
+ */
 @Setter
 @Getter
 @Entity

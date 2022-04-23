@@ -10,6 +10,10 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Данный класс отвечает за хранение информации о манге (произведении).
+ * В базе данных сущности данного класса хранятся в таблице title.
+ */
 @Getter
 @Setter
 @Entity

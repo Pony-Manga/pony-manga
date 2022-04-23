@@ -6,6 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Данный класс отвечает за хранение информации об авторе манги.
+ * В базе данных сущности данного класса хранятся в таблице author.
+ */
 @Getter
 @Setter
 @Entity

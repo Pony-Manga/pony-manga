@@ -6,6 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Данный класс отвечает за хранение информации о типах манги (произведений) на сайте.
+ * В базе данных сущности данного класса хранятся в таблице manga_type.
+ */
 @Getter
 @Setter
 @Entity

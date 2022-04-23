@@ -5,6 +5,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Данный класс отвечает за хранение информации о комментарии под страницей главы.
+ * В базе данных сущности данного класса хранятся в таблице page_commentary.
+ */
 @Getter
 @Setter
 @Entity

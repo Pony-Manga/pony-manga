@@ -5,6 +5,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * Данный класс отвечает за хранение информации об отзыве, который оставил пользователь манге.
+ * В базе данных сущности данного класса хранятся в таблице title_review.
+ */
 @Getter
 @Setter
 @Table(name = "title_review")

@@ -7,6 +7,10 @@ import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 import java.util.Set;
 
+/**
+ * Данный класс отвечает за хранение информации о ролях пользователей.
+ * В базе данных сущности данного класса хранятся в таблице role.
+ */
 @Setter
 @Getter
 @Entity

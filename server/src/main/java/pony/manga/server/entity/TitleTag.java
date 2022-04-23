@@ -6,6 +6,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * Данный класс отвечает за хранение информацию о тегах, которые можно присвоить манге(произведению).
+ * В базе данных сущности данного класса хранятся в таблице title_tag.
+ */
 @Getter
 @Setter
 @Entity

@@ -7,6 +7,10 @@ import javax.persistence.*;
 import java.io.File;
 import java.util.List;
 
+/**
+ * Данный класс отвечает за хранение информации о странице, которая является частью главы манги.
+ * В базе данных сущности данного класса хранятся в таблице chapter_page.
+ */
 @Getter
 @Setter
 @Entity
