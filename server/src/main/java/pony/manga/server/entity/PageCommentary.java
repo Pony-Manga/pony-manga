@@ -1,5 +1,6 @@
 package pony.manga.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,5 +23,6 @@ public class PageCommentary {
     @ManyToOne
     private User commentator;
     @ManyToOne
+    @JsonBackReference
     private ChapterPage page;
 }

@@ -151,7 +151,7 @@ public class TitleCreationController {
 
     /**
      * Метод с эндпоинтом /api/add/title. На данный эндпоинтом POST запросом отправляют данные о новом
-     * теге, где основные поля названы как в классе {@link pony.manga.server.dto.TitleDTO}, а также поле logo - файл
+     * произведении, где основные поля названы как в классе {@link pony.manga.server.dto.TitleDTO}, а также поле logo - файл
      * с изображением обложки произведения
      * @param title - основные поля с инфомрацией о произведении
      * @param model - модель из Spring, в нее заносится ответ сервера. Его подбирает jsonTemplate и отправляет как ответ
@@ -170,6 +170,11 @@ public class TitleCreationController {
      */
     @PostMapping("/api/add/title")
     public String addTitle(TitleDTO title, Model model, @RequestParam("logo") MultipartFile logo){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) principal;
+        if (user == null){
+            return "jsonTemplate";
+        }
         List<String> errorList = new ArrayList<>();
         if (title.getName().equals("") || title.getName() == null){
             errorList.add("ERROR_NAME_EMPTY");
@@ -210,6 +215,7 @@ public class TitleCreationController {
             result.setName(title.getName());
             result.setReleaseDate(title.getReleaseDate());
             result.setTitleStatus(title.getTitleStatus());
+            result.setUploader(user);
             if (titleService.saveTitle(result)){
                 model.addAttribute("response", "SUCCESS");
             } else {
@@ -219,5 +225,144 @@ public class TitleCreationController {
         return "jsonTemplate";
     }
 
+    /**
+     * Метод с эндпоинтом /api/add/chapter. На данный эндпоинтом POST запросом отправляют данные о новой
+     * главе, где основные поля названы как в классе {@link pony.manga.server.entity.TitleChapter}, а также поле pages - файлы
+     * с изображением страницы
+     * @param chapter - информация о главе
+     * @param pages - список страниц главы
+     * @param model - модель из Spring, в нее заносится ответ сервера. Его подбирает jsonTemplate и отправляет как ответ
+     * @return Возвращает JSON со списком ошибок если такие есть: <br>
+     * ERROR_NAME_EMPTY - название главы пустое <br>
+     * ERROR_DATE_UPLOADED_EMPTY - отсутсвует дата загрузки <br>
+     * Когда запрос успешен возвращается SUCCESS.
+     */
+    @PostMapping("/api/add/chapter")
+    public String addChapter(TitleChapter chapter, @RequestParam("files") MultipartFile[] pages, Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) principal;
+        if (user == null){
+            return "jsonTemplate";
+        }
+        List<String> errorList = new ArrayList<>();
+        if (chapter.getChapterName().equals("") || chapter.getChapterName() == null){
+            errorList.add("ERROR_NAME_EMPTY");
+        }
+        if (chapter.getDateUploaded() == null){
+            errorList.add("ERROR_DATE_UPLOADED_EMPTY");
+        }
+        if (pages.length == 0){
+            errorList.add("ERROR_NO_PAGES");
+        }
+        if (errorList.size() == 0){
+            chapter.setUploader(user);
+            List<ChapterPage> pagesList = new ArrayList<>();
+            for (int i = 0; i < pages.length; i ++){
+                ChapterPage page = new ChapterPage();
+                page.setPageNumber(i + 1);
+                try {
+                    page.setPagePic(pages[i].getBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                pagesList.add(page);
+            }
+            chapter.setPages(pagesList);
+            titleService.saveTitleChapter(chapter);
+            model.addAttribute("response", "SUCCESS");
+        } else {
+            model.addAttribute("response", errorList);
+        }
+        return "jsonTemplate";
+    }
 
+    /**
+     * Метод с эндпоинтом /api/add/page/commentary. На данный метод POST отправляют данные о комментарии к
+     * сранице, где основные поля названы как в классе {@link pony.manga.server.entity.PageCommentary}
+     * @param pageCommentary - информация о комментарии
+     * @param model - модель из Spring, в нее заносится ответ сервера. Его подбирает jsonTemplate и отправляет как ответ
+     * @return Возвращает JSON со списком ошибок если такие есть: <br>
+     * ERROR_TEXT_EMPTY - текс коммментария пустой <br>
+     * Когда запрос успешен возвращается SUCCESS.
+     */
+    @PostMapping("/api/add/page/commentary")
+    public String addPageCommentary(PageCommentary pageCommentary, Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) principal;
+        if (user == null){
+            return "jsonTemplate";
+        }
+        List<String> errorList = new ArrayList<>();
+        if (pageCommentary.getCommentaryText().equals("") || pageCommentary.getCommentaryText()==null){
+            errorList.add("ERROR_TEXT_EMPTY");
+        }
+        if (errorList.size()!=0){
+            pageCommentary.setCommentator(user);
+            titleService.savePageCommentary(pageCommentary);
+            model.addAttribute("response", "SUCCESS");
+        } else {
+            model.addAttribute("response", errorList);
+        }
+        return "jsonTemplate";
+    }
+
+    /**
+     * Метод с эндпоинтом /api/add/title/review. На данный метод POST отправляют данные об отзыве к
+     * произведению, где основные поля названы как в классе {@link pony.manga.server.entity.TitleReview}
+     * @param review - информация об отзыве
+     * @param model - модель из Spring, в нее заносится ответ сервера. Его подбирает jsonTemplate и отправляет как ответ
+     * @return Возвращает JSON со списком ошибок если такие есть: <br>
+     * ERROR_TEXT_EMPTY - текс отзыва пустой <br>
+     * Когда запрос успешен возвращается SUCCESS.
+     */
+    @PostMapping("/api/add/title/review")
+    public String addTitleReview(TitleReview review, Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) principal;
+        if (user == null){
+            return "jsonTemplate";
+        }
+        List<String> errorList = new ArrayList<>();
+        if (review.getReviewText().equals("") || review.getReviewText() == null){
+            errorList.add("ERROR_TEXT_EMPTY");
+        }
+        if (errorList.size()!=0){
+            review.setReviewer(user);
+            titleService.saveTitleReview(review);
+            model.addAttribute("response", "SUCCESS");
+        } else {
+            model.addAttribute("response", errorList);
+        }
+        return "jsonTemplate";
+    }
+
+    /**
+     * Метод с эндпоинтом /api/add/title/rating. На данный метод POST отправляют данные о рейтинге к
+     * произведению, где основные поля названы как в классе {@link pony.manga.server.entity.TitleRating}
+     * @param titleRating - данные о рейтинге
+     * @param model - модель из Spring, в нее заносится ответ сервера. Его подбирает jsonTemplate и отправляет как ответ
+     * @return Возвращает JSON со списком ошибок если такие есть: <br>
+     * ERROR_RATING_EMPTY - оценка пользователья пустая <br>
+     * Когда запрос успешен возвращается SUCCESS.
+     */
+    @PostMapping("/api/add/title/rating")
+    public String addTitleRating(TitleRating titleRating, Model model){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = (User) principal;
+        if (user == null){
+            return "jsonTemplate";
+        }
+        List<String> errorList = new ArrayList<>();
+        if (titleRating.getUserRating() == 0){
+            errorList.add("ERROR_RATING_EMPTY");
+        }
+        if (errorList.size()!=0){
+            titleRating.setReviewer(user);
+            titleService.saveTitleRating(titleRating);
+            model.addAttribute("response", "SUCCESS");
+        } else {
+            model.addAttribute("response", errorList);
+        }
+        return "jsonTemplate";
+    }
 }

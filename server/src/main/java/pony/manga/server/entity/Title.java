@@ -1,5 +1,6 @@
 package pony.manga.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -17,15 +18,12 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "title")
+@Table(name = "titles")
 public class Title {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = Long.valueOf(0);
     private String name;
-    @Lob
-    @Column(columnDefinition="BLOB")
-    @Type(type="org.hibernate.type.BinaryType")
     private byte[] logo;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date releaseDate;
@@ -43,14 +41,18 @@ public class Title {
     User uploader;
     private int rating;
     @OneToMany(mappedBy="reviewTo")
+    @JsonBackReference
     List<TitleReview> reviews;
     @OneToMany(mappedBy = "ratingTo")
+    @JsonBackReference
     List<TitleRating> ratings;
     @OneToMany(mappedBy = "title")
+    @JsonBackReference
     List<TitleChapter> chapters;
     @ManyToMany(mappedBy = "titles")
     List<TitleTag> tags;
     @ManyToMany(mappedBy="favourite")
+    @JsonBackReference
     List<User> userAddedToFavourite;
 
 }

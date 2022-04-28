@@ -19,7 +19,7 @@ public class ChapterPage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = Long.valueOf(0);
-    private File pagePic;
+    private byte[] pagePic;
     private int pageNumber;
     @OneToMany(mappedBy = "page")
     List<PageCommentary> commentaries;

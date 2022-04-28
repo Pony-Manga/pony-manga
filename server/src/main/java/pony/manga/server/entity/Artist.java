@@ -1,5 +1,6 @@
 package pony.manga.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,5 +21,6 @@ public class Artist {
     private Long id = Long.valueOf(0);
     private String name;
     @OneToMany(mappedBy="artist")
+    @JsonBackReference
     List<Title> titles;
 }

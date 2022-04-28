@@ -1,5 +1,6 @@
 package pony.manga.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,10 +26,10 @@ public class TitleChapter {
     @ManyToOne
     private Title title;
     private Date dateUploaded;
-    private int tomeNumber;
-    private long chapterNumber;
     @ManyToMany(mappedBy = "unreadChapters")
+    @JsonBackReference
     List<User> unreadByUsers;
     @OneToMany(mappedBy = "chapter")
+    @JsonBackReference
     List<ChapterPage> pages;
 }

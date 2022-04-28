@@ -1,5 +1,6 @@
 package pony.manga.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ public class TitleRating {
     private Long id = Long.valueOf(0);
     int userRating;
     @ManyToOne
+    @JsonBackReference
     User reviewer;
     @ManyToOne
     Title ratingTo;

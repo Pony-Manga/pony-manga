@@ -1,5 +1,6 @@
 package pony.manga.server.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,20 +36,24 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "reviewer")
     List<TitleReview> reviews;
     @OneToMany(mappedBy = "reviewer")
+    @JsonBackReference
     List<TitleRating> ratings;
     @ManyToMany()
     List<Title> favourite;
     @OneToMany(mappedBy = "uploader")
     List<TitleChapter> chapterUploads;
     @OneToMany(mappedBy = "commentator")
+    @JsonBackReference
     List<PageCommentary> pageCommentaries;
     @OneToMany(mappedBy = "uploader")
     List<Title> uploadedTitles;
     @ManyToMany()
+    @JsonBackReference
     List<TitleChapter> unreadChapters;
     @OneToMany(mappedBy = "author")
     List<ForumThread> forumThreads;
     @OneToMany(mappedBy = "author")
+    @JsonBackReference
     List<ForumThreadMessage> forumThreadMessages;
 
     public User(){}
