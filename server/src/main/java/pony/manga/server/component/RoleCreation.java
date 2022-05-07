@@ -6,7 +6,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
-import pony.manga.server.dto.TitleDTO;
 import pony.manga.server.entity.Role;
 import pony.manga.server.entity.User;
 import pony.manga.server.repository.RoleRepository;

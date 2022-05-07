@@ -1,7 +1,9 @@
 package pony.manga.server.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,18 +21,21 @@ import java.util.Set;
 @Getter
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+@AllArgsConstructor
+public class User  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = Long.valueOf(0);
     String mail;
+    String email;
     String nickname;
+    String username;
     String password;
     String avatarPath;
     @Transient
     private String passwordConfirm;
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    private Set<Role> roles;
     @Column()
     boolean isActive = false;
     @OneToMany(mappedBy = "reviewer")
@@ -56,13 +61,16 @@ public class User implements UserDetails {
     @JsonBackReference
     List<ForumThreadMessage> forumThreadMessages;
 
+    @OneToOne
+    Role role;
+
     public User(){}
 
     public String getUsername(){
         return mail;
     }
 
-    @Override
+
     public boolean isAccountNonExpired() {
         return true;
     }
@@ -75,15 +83,12 @@ public class User implements UserDetails {
         return true;
     }
 
-    @Override
+
     public boolean isEnabled() {
         return isActive;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
-    }
+
 
     public boolean isActive() {
         return this.isActive;
